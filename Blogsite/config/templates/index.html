@@ -15,21 +15,23 @@
                                 <h3 class="post-subtitle">{{blog.description | truncatewords:15}}</h3>
                             </a>
                             <p class="post-meta">
-                                Posted by
-                                <a href="#!">Alireza</a>
-                                {{blog.jpublish}}
+                                منتشر شده توسط
+                                <a href="#!">پویا زهره وند</a>
+                                در {{blog.jpublish}}
                             </p>
                             <div>
                                 {% for category in blog.category.all %}
+                                {% if category.is_active %}
                                     <a href="/">#{{category.title}}</a>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         </div>
+                        <hr>
                     {% endfor %}
                     <!-- Divider-->
-                    <hr class="my-4" />
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">پست های قدیمی →</a></div>
                 </div>
             </div>
         </div>

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block heading %}وبلاگ جهانگردی فارسی{% endblock heading %}
+{% block time %}با ما قوه شگفتی را وادار به کنکاش  کنید{% endblock time %}
+{% block content %}
+         <!-- Main Content-->
+         <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+
+                    <!-- Post preview-->
+                    {% for blog in category.blogs.Published %}
+                        <div class="post-preview">
+                            <a href="{% url 'blog:detail' blog.id %}">
+                                <h2 class="post-title">{{blog.title}}</h2>
+                                <h3 class="post-subtitle">{{blog.description | truncatewords:15}}</h3>
+                            </a>
+                            <p class="post-meta">
+                                منتشر شده توسط
+                                <a href="#!">پویا زهره وند</a>
+                                در {{blog.jpublish}}
+                            </p>
+                            <div>
+                                {% for category in blog.category.all %}
+                                {% if category.is_active %}
+                                    <a href="/">#{{category.title}}</a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                    <!-- Divider-->
+                    <!-- Pager-->
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                </div>
+            </div>
+        </div>
+{% endblock content %}

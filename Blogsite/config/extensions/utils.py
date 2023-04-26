@@ -1,5 +1,4 @@
 from . import jalali
- 
 
 def persian_numbers_converter(my_str):
     nums = {
@@ -19,10 +18,10 @@ def persian_numbers_converter(my_str):
     return my_str
 
 def jalali_converter(time):
+    
 
     jmonth = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","ابان","اذر","دی","بهمن","اسفند"]
-
-    time_to_str = f"{time.year}.{time.month}.{time.day}"
+    time_to_str = "{} {} {}".format(time.year,time.month,time.day)
     time_to_tuple = jalali.Gregorian(time_to_str).persian_tuple()
     time_to_list = list(time_to_tuple)
 
@@ -31,8 +30,9 @@ def jalali_converter(time):
             time_to_list[1] = month
             break
 
-    output =  "{} {}".format(
-        time_to_list[0],
+    output = "{} {}".format(
         time_to_list[1],
+        time_to_list[0],
     )
-    return persian_numbers_converter(output)
+    return persian_numbers_converter(output)        
+            

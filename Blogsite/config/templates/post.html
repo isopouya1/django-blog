@@ -4,7 +4,9 @@
 {% block time %}{{blog.jpublish}}{% endblock time %}
 {% block heading %}{{blog.title}}{% endblock heading %}
 {% block content %}
-
+<head>
+    <title>{% block chrome_title %}{{blog.title}}{% endblock chrome_title %}</title>
+</head>
         <!-- Post Content-->
         <article class="mb-4">
             <div class="container px-4 px-lg-5">
