@@ -6,9 +6,9 @@
          <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
-
+                    <h1 class="alert alert-primary text-center">{{category.title}}</h1>
                     <!-- Post preview-->
-                    {% for blog in category.blogs.Published %}
+                    {% for blog in blogs %}
                         <div class="post-preview">
                             <a href="{% url 'blog:detail' blog.id %}">
                                 <h2 class="post-title">{{blog.title}}</h2>
@@ -16,7 +16,7 @@
                             </a>
                             <p class="post-meta">
                                 منتشر شده توسط
-                                <a href="#!">پویا زهره وند</a>
+                                <a href="{% url 'blog:auth' blog.author.username %}">{{blog.author}}</a>
                                 در {{blog.jpublish}}
                             </p>
                             <div>
@@ -31,7 +31,14 @@
                     {% endfor %}
                     <!-- Divider-->
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    <div style="display: flex; justify-content: space-between;" >
+                        {% if blogs.has_previous %}
+                        <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{% url 'blog:category' category.slug blogs.previous_page_number %}">پست های جدیدتر →</a></div>
+                        {% endif %}
+                        {% if blogs.has_next %}
+                        <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{% url 'blog:category' category.slug blogs.next_page_number %}">پست های قدیمی →</a></div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

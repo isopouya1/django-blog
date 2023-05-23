@@ -1,14 +1,15 @@
 
 from django.shortcuts import render
-from blog.models import Blog , Category
+from django.core.paginator import Paginator
+from blog.models import Blog , Category , User
 # Create your views here.
 
-def home(request):
-    blogs = Blog.objects.Published(status = "p")
-    categories = Category.objects.filter(is_active=True)
+def home(request,page=1):
+    blog_list = Blog.objects.Published()
+    pageinetoir = Paginator(blog_list,3)
+    blogs = pageinetoir.get_page(page)
     context = {
         'blogs':blogs,
-        'categories':categories,
     }
     return render(request,'index.html',context)
 
@@ -20,9 +21,21 @@ def detail(request,pk):
     }
     return render(request,'post.html',context)
 
-def category(request,slug):
+def category(request,slug,page=1):
+    category = Category.objects.get(slug=slug,is_active = True)
+    blog_list = category.blogs.Published()
+    pageinetoir = Paginator(blog_list,3)
+    blogs = pageinetoir.get_page(page)
     context = {
-             "category":Category.objects.get(slug = slug)
-    }
-        
+             "category":category,
+             "blogs":blogs
+    }     
     return render(request,'category.html',context)
+
+def author_page(request,name):
+    user = User.objects.get(username = name)
+    blogs = user.blogs.all()
+    context= {
+        'blogs': blogs
+    }
+    return render(request,"author.html",context)

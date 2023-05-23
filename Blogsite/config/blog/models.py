@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.utils.html import format_html
@@ -7,8 +8,13 @@ from extensions.utils import jalali_converter
 class PublishedManager(models.Manager):
     def Published(self):
         return self.filter(status='p')
+
+class CategoryManager(models.Manager):
+    def Active(self):
+        return self.filter(is_active=True)
     
 class Category(models.Model):
+    parent = models.ForeignKey("self",on_delete=models.SET_NULL,null=True,blank=True,verbose_name="زیردسته",related_name="children")
     title = models.CharField(max_length=50,verbose_name="عنوان دسته بندی")
     slug = models.SlugField(verbose_name="آدرس دسته بندی",unique=True)
     position = models.IntegerField(verbose_name="جایگاه")
@@ -21,6 +27,8 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.title
     
+    objects = CategoryManager()
+
 class Blog(models.Model):
     STATUS_CHOICES = (
         ('d', 'پیش‌نویس'),		 # draft
@@ -35,6 +43,7 @@ class Blog(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name="وضعیت")
+    author = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,related_name='blogs',verbose_name="نویسنده")
 
     def __str__(self) -> str:
         return self.title
@@ -42,11 +51,14 @@ class Blog(models.Model):
     def jpublish(self):
         return jalali_converter(self.publish)
     jpublish.short_description = "تاریخ مقاله"
+
     class Meta:
         verbose_name = "مقاله"
         verbose_name_plural = "مقالات"
-    
+        ordering = ["-publish"]
+        
     def Image(self):
         return format_html("<img width=90 style='border-radius:5px;' src='{}'>".format(self.thumbnail.url))
     Image.short_description = "عکس"
+
     objects = PublishedManager()

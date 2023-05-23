@@ -2,7 +2,21 @@
     <ul class="navbar-nav ms-auto py-4 py-lg-0">
         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog:home' %}">خانه</a></li>
         {% for category in categories %}
+        {% if category.parent == None %}
         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog:category'  category.slug %}">{{category.title}}</a></li>
-        {% endfor %}
+        {% if category.children.Active %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-link text-light  btn-sm dropdown-toggle"  onclick="this.blur();" data-bs-toggle="dropdown" aria-expanded="false">
+              {{category.title}}
+            </button>
+            <ul class="dropdown-menu">
+                {% for category in category.children.Active %}
+              <li class="dropdown-item text-dark"><a  class="dropdown-item text-dark" href="{% url 'blog:category'  category.slug %}">{{category.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+        {% endif %}
+        {% endfor %}         
     </ul>
 </div>

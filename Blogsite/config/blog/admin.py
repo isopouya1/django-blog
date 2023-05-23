@@ -35,5 +35,3 @@ class BlogAdmin(admin.ModelAdmin):
 @admin.register(Category)   
 class Categoryadmin(admin.ModelAdmin):
     list_display = ["position","title","slug","is_active"]
-
-        

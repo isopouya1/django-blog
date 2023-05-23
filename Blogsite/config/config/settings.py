@@ -85,10 +85,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-
-]
+STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 STATIC_URL = "static/"
 
 
